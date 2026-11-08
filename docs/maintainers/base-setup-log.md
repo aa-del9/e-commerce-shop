@@ -21,7 +21,7 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 
 - [x] `pnpm install && pnpm dev` works with only `.env.example` copied to `.env.local` (friendly setup page)
 - ❌ With dev store credentials: storefront flows, PKR prices, clean neutral theme at 360/1280 — no dev store available (`<DEV_STORE>` placeholder); flows verified on mock.shop instead, PKR via unit tests
-- [x] `pnpm verify` passes; CI green on the PR (see PR checks)
+- ⚠️ `pnpm verify` passes (locally + clean clone); CI did not start: GitHub account billing lock (run log R14)
 - [x] No brand/category strings or values outside `brand/` (documented exceptions)
 - [x] Every feature flag works on/off; content blocks render nothing when empty (agent/botProtection not run live)
 - [x] `pnpm shopify:setup --dry-run` runs and prints plan + manual checklist (no dev store: planned against an empty store)

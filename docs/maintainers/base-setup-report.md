@@ -67,19 +67,19 @@ the Shopify admin and Vercel env vars. Upstream structure is unchanged, and noth
 
 **Definition of done:**
 
-| Item                                                       | Status                                                                                                                                                                                                      |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install && pnpm dev` with only `.env.example` copied | ✅ Setup page instead of a crash (HTTP 503 HTML page, screenshots at 360/1280)                                                                                                                              |
-| Dev-store flows, PKR, 360/1280                             | ❌ No dev store (`<DEV_STORE>` is still a placeholder). Home, PDP, search, cart and the checkout redirect pass against Shopify's public `mock.shop` (prices CAD). PKR formatting is covered by unit tests.  |
-| `pnpm verify`; CI green                                    | ✅ Locally; CI status is on the PR                                                                                                                                                                          |
-| No brand/category values outside `brand/`                  | ✅ The only exceptions are documented: Shop Pay purple, the dev-only setup page, and Eve's red error text                                                                                                   |
-| Flags on/off; empty content renders nothing                | ✅ All launch flags toggled off and on with rendered HTML checked. Empty-content state checked on mock.shop. `agent`/`botProtection` were not run live because they need extra credentials.                 |
-| `shopify:setup --dry-run`                                  | ✅ Plans against an empty store (no credentials) and prints the manual checklist                                                                                                                            |
-| Eve, BotID, i18n, Markets disabled via config              | ✅ (`i18n`/`markets` are `z.literal(false)`)                                                                                                                                                                |
-| `UPSTREAM.md` complete                                     | ✅ Cross-checked against `git diff upstream/main`                                                                                                                                                           |
-| Docs exist and match the code                              | ✅                                                                                                                                                                                                          |
-| Guard hook                                                 | ✅ With role `store`, edits to `lib/`, `app/` and `proxy.ts` are blocked (exit 2), and `brand/`, `docs/`, `public/` and `.env.example` are allowed. The override works and the role was restored to `base`. |
-| Branch pushed, PR open                                     | ✅ See the PR link                                                                                                                                                                                          |
+| Item                                                       | Status                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install && pnpm dev` with only `.env.example` copied | ✅ Setup page instead of a crash (HTTP 503 HTML page, screenshots at 360/1280)                                                                                                                                                                                    |
+| Dev-store flows, PKR, 360/1280                             | ❌ No dev store (`<DEV_STORE>` is still a placeholder). Home, PDP, search, cart and the checkout redirect pass against Shopify's public `mock.shop` (prices CAD). PKR formatting is covered by unit tests.                                                        |
+| `pnpm verify`; CI green                                    | ⚠️ `pnpm verify` passes locally and in a fresh clone with `pnpm install --frozen-lockfile` and no `.env.local`, which is exactly what CI runs. **GitHub Actions did not start:** "The job was not started because your account is locked due to a billing issue." |
+| No brand/category values outside `brand/`                  | ✅ The only exceptions are documented: Shop Pay purple, the dev-only setup page, and Eve's red error text                                                                                                                                                         |
+| Flags on/off; empty content renders nothing                | ✅ All launch flags toggled off and on with rendered HTML checked. Empty-content state checked on mock.shop. `agent`/`botProtection` were not run live because they need extra credentials.                                                                       |
+| `shopify:setup --dry-run`                                  | ✅ Plans against an empty store (no credentials) and prints the manual checklist                                                                                                                                                                                  |
+| Eve, BotID, i18n, Markets disabled via config              | ✅ (`i18n`/`markets` are `z.literal(false)`)                                                                                                                                                                                                                      |
+| `UPSTREAM.md` complete                                     | ✅ Cross-checked against `git diff upstream/main`                                                                                                                                                                                                                 |
+| Docs exist and match the code                              | ✅                                                                                                                                                                                                                                                                |
+| Guard hook                                                 | ✅ With role `store`, edits to `lib/`, `app/` and `proxy.ts` are blocked (exit 2), and `brand/`, `docs/`, `public/` and `.env.example` are allowed. The override works and the role was restored to `base`.                                                       |
+| Branch pushed, PR open                                     | ✅ See the PR link                                                                                                                                                                                                                                                |
 
 Screenshots (gitignored) are in `docs/maintainers/screenshots/` for the home, collection, search, PDP,
 cart, FAQ, contact, 404 and setup pages at 360 and 1280.
@@ -177,38 +177,40 @@ There are no new runtime dependencies. Both additions are dev-only and pinned:
 
 ## 5. Manual steps left for you
 
-1. **Review and merge the PR.** I didn't merge it, and I didn't push to `main`.
-2. **GitHub branch protection** for `main`: the exact `gh api` command is in
+1. **Fix the GitHub billing lock** so Actions can run (Settings → Billing). Then re-run CI on PR #1 (`gh run rerun 42498223299 --repo aa-del9/e-commerce-shop`).
+2. **Review and merge the PR.** I didn't merge it, and I didn't push to `main`.
+3. **GitHub branch protection** for `main`: the exact `gh api` command is in
    `docs/maintainers/repo-setup.md`. Run it after CI has run once, so the `verify` check exists.
-3. **Dev store:** create a free Shopify dev store, then:
+4. **Dev store:** create a free Shopify dev store, then:
    1. install the Headless channel and set the three required env vars in `.env.local`;
    2. run `pnpm env:check` (it prints the shop ID);
    3. create a Dev Dashboard app with the six scopes listed in `docs/03`, install it, and add
       `SHOPIFY_ADMIN_CLIENT_ID`/`SECRET` to `.env.local`;
    4. run `pnpm shopify:setup --dry-run`, then `pnpm shopify:setup`, then optionally `pnpm shopify:seed`;
    5. run `BASE_URL=http://localhost:3000 pnpm test:e2e`.
-4. **Vercel project** for the base preview: import the repo and set the env vars per `docs/04`. Also set
+5. **Vercel project** for the base preview: import the repo and set the env vars per `docs/04`. Also set
    spend management (alerts at 50/75/90%), Firewall bot rules and the function region test (`repo-setup.md`).
-5. **Webhooks:** set `NEXT_PUBLIC_SITE_URL` to the public https domain before running `shopify:setup`, so
+6. **Webhooks:** set `NEXT_PUBLIC_SITE_URL` to the public https domain before running `shopify:setup`, so
    webhooks register. Then set `SHOPIFY_WEBHOOK_SECRET` on Vercel.
-6. **Figma MCP:** run `/mcp` → figma and sign in, once per machine. It's not used in this run.
-7. **Optional:** a GitHub "Template repository" flag on the base if you prefer "Use this template" over a
+7. **Figma MCP:** run `/mcp` → figma and sign in, once per machine. It's not used in this run.
+8. **Optional:** a GitHub "Template repository" flag on the base if you prefer "Use this template" over a
    private repo with a `base` remote (`docs/03` explains both).
 
 ## 6. Open questions, most blocking first
 
-1. **Dev store and Admin access:** without one, the setup script, content rendering with real data and PKR
+1. **GitHub Actions billing lock:** CI cannot run until it is resolved, and branch protection with a required `verify` check would block every merge meanwhile.
+2. **Dev store and Admin access:** without one, the setup script, content rendering with real data and PKR
    prices end to end are unverified. This blocks confidence for the first store.
-2. **Vercel plan:** Hobby is non-commercial-only, and a live store needs Pro. Spend management also needs
+3. **Vercel plan:** Hobby is non-commercial-only, and a live store needs Pro. Spend management also needs
    Pro. Is that acceptable, or should hosting be revisited?
-3. **Payments at launch:** COD only, or an online gateway too? Gateways are configured in Shopify. The
+4. **Payments at launch:** COD only, or an online gateway too? Gateways are configured in Shopify. The
    storefront needs no change, but the launch checklist depends on the answer.
-4. **Webhook signing:** please confirm on the dev store that webhooks registered by the Dev Dashboard app
+5. **Webhook signing:** please confirm on the dev store that webhooks registered by the Dev Dashboard app
    verify with its client secret. If not, use `REVALIDATE_SECRET` as a fallback.
-5. **Size chart editing:** are pipe-separated rows (`M | 102 | 70`) acceptable to the PM, or should rows be
+6. **Size chart editing:** are pipe-separated rows (`M | 102 | 70`) acceptable to the PM, or should rows be
    separate metaobject entries (roadmap)?
-6. **Menus:** keep navigation in `brand/config.ts` (needs a PR to change), or switch to Shopify-managed menus
+7. **Menus:** keep navigation in `brand/config.ts` (needs a PR to change), or switch to Shopify-managed menus
    with upstream's `enable-shopify-menus` skill?
-7. **Function region:** `iad1` (default) or `bom1`. This needs a measurement from Pakistan.
-8. **Meta Conversions API:** build the server-side sender now (needs rate limiting) or rely on Shopify's
+8. **Function region:** `iad1` (default) or `bom1`. This needs a measurement from Pakistan.
+9. **Meta Conversions API:** build the server-side sender now (needs rate limiting) or rely on Shopify's
    Facebook & Instagram app for Purchase events?

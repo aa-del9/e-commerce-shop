@@ -92,3 +92,14 @@ Decisions made during the unattended base-setup run. Each entry: decision, alter
 - **Alternatives:** add `tsx` as a dependency, or enable `allowImportingTsExtensions` in tsconfig.
 - **Why:** no new dependency and no upstream tsconfig change; Node 26 runs TypeScript natively.
 - **Reverse:** delete the hook and import only self-contained modules.
+
+## R14. CI blocked by a GitHub billing lock
+
+- **Observation:** the PR's `verify` job was not started: "The job was not started because your account is locked due to a billing issue."
+- **Fallback:** ran the CI steps (`pnpm install --frozen-lockfile`, `pnpm verify`) in a fresh clone without `.env.local`: passed.
+- **Reverse:** after the lock is lifted, re-run the workflow on PR #1.
+
+## R15. `gh pr create` needs `--repo` in this fork
+
+- **Observation:** with the `upstream` remote present, `gh` targeted `vercel/shop` and was refused (nothing was created there). The PR was opened with `--repo aa-del9/e-commerce-shop`, and `gh repo set-default` now points at the fork.
+- **How to apply:** the `ship-change` skill passes `--repo` explicitly.
