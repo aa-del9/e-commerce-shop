@@ -21,8 +21,13 @@ export async function Footer() {
   const policies = await getShopPolicies({}).catch(() => []);
   return (
     <footer>
-      {/* pb-22 clears the fixed agent ActionBar pill when it renders */}
-      <Container className={cn("pt-20 pb-10", shopConfig.agent.isEnabled && "pb-22")}>
+      {/* pb-22 clears the fixed agent ActionBar pill or WhatsApp button when they render */}
+      <Container
+        className={cn(
+          "pt-20 pb-10",
+          (shopConfig.agent.isEnabled || brand.features.whatsappButton) && "pb-22",
+        )}
+      >
         <Sections className="gap-10">
           {items.length > 0 && <FooterMenu items={items} />}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
