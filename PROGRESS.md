@@ -32,4 +32,3 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - [ ] Branch `base-setup` pushed and PR open to `main`
 
 ## Notes
-

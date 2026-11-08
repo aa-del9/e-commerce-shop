@@ -13,11 +13,11 @@ TypeScript 7 (`tsc` is the Go compiler, no compiler API); oxlint + oxfmt; Node 2
 
 ## Owners (from `AGENTS.md`)
 
-| Owner | Lives in |
-| --- | --- |
-| Shopify (commerce) | `lib/shopify/**`, `lib/cart/**`, `lib/auth/{request,server}.ts`, Hydrogen handlers in `proxy.ts`, `lib/<domain>/types.ts` |
-| Next.js (app) | `app/`, `components/`, `lib/<domain>/{index,server,client,action}.ts`, `lib/config/`, `next.config.ts`, `proxy.ts`, SEO / Markdown surface |
-| Eve (agent) | `agent/`, `lib/agent/`, `components/agent/`, `app/api/agent/session`, `app/agent/ucp-profile.json` |
+| Owner              | Lives in                                                                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Shopify (commerce) | `lib/shopify/**`, `lib/cart/**`, `lib/auth/{request,server}.ts`, Hydrogen handlers in `proxy.ts`, `lib/<domain>/types.ts`                  |
+| Next.js (app)      | `app/`, `components/`, `lib/<domain>/{index,server,client,action}.ts`, `lib/config/`, `next.config.ts`, `proxy.ts`, SEO / Markdown surface |
+| Eve (agent)        | `agent/`, `lib/agent/`, `components/agent/`, `app/api/agent/session`, `app/agent/ucp-profile.json`                                         |
 
 The base adds a fourth owner, the brand layer (`brand/`), see `docs/ai/brand-layer.md`.
 
@@ -52,20 +52,20 @@ loaders use.
 
 ## Feature flags (`shopConfig` in `lib/config/index.ts`)
 
-| Flag | Effect |
-| --- | --- |
-| `agent.isEnabled` | Eve agent (`withEve` plugin in `next.config.ts`, `AgentButton`) |
-| `analytics.shopify.isEnabled` | Hydrogen `ShopifyScripts` with `channel: "headless"` analytics |
-| `analytics.shopify.consent.{isEnabled,mode}` | Shopify Customer Privacy banner |
-| `analytics.vercel`, `analytics.speedInsights` | Vercel Web Analytics / Speed Insights |
-| `auth.isEnabled` | Customer Account API (needs 3 server env vars, checked at config time) |
-| `botid.{isEnabled,checkLevel}` | BotID (`withBotId` plugin, `BotIdClient` in layout) |
-| `localization.{country,language,locale}` | Storefront context (country/language) and formatting locale |
-| `pdp.{bundles,buyWithShop,complementaryProducts,quantityPicker,relatedProducts}` | PDP blocks |
-| `redirects.shopifyNotFound` | 404 page asks Shopify for URL redirects |
-| `search.isEnabled` | Predictive search modal in the nav |
-| `shopify.webmcp` | WebMCP tool registration through Shopify scripts |
-| `site.{name,description,url}` | Metadata, schema, manifest, breadcrumbs |
+| Flag                                                                             | Effect                                                                 |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `agent.isEnabled`                                                                | Eve agent (`withEve` plugin in `next.config.ts`, `AgentButton`)        |
+| `analytics.shopify.isEnabled`                                                    | Hydrogen `ShopifyScripts` with `channel: "headless"` analytics         |
+| `analytics.shopify.consent.{isEnabled,mode}`                                     | Shopify Customer Privacy banner                                        |
+| `analytics.vercel`, `analytics.speedInsights`                                    | Vercel Web Analytics / Speed Insights                                  |
+| `auth.isEnabled`                                                                 | Customer Account API (needs 3 server env vars, checked at config time) |
+| `botid.{isEnabled,checkLevel}`                                                   | BotID (`withBotId` plugin, `BotIdClient` in layout)                    |
+| `localization.{country,language,locale}`                                         | Storefront context (country/language) and formatting locale            |
+| `pdp.{bundles,buyWithShop,complementaryProducts,quantityPicker,relatedProducts}` | PDP blocks                                                             |
+| `redirects.shopifyNotFound`                                                      | 404 page asks Shopify for URL redirects                                |
+| `search.isEnabled`                                                               | Predictive search modal in the nav                                     |
+| `shopify.webmcp`                                                                 | WebMCP tool registration through Shopify scripts                       |
+| `site.{name,description,url}`                                                    | Metadata, schema, manifest, breadcrumbs                                |
 
 `isShopifyScriptsEnabled` decides whether `ShopifyScripts` mounts at all. The Hydrogen analytics
 bus (`window.Shopify.analytics`, `lib/analytics/client.ts` → `addAnalyticsDestination`) only exists
@@ -125,12 +125,12 @@ start. The base replaces the crash with a setup page in dev and keeps the fail-f
 
 ## Extension points the base uses
 
-| Need | Extension point |
-| --- | --- |
-| Brand identity and flags | Derive `shopConfig` from `brand/config.ts` (adapter in `lib/config/index.ts`) |
+| Need                             | Extension point                                                                                                                          |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Brand identity and flags         | Derive `shopConfig` from `brand/config.ts` (adapter in `lib/config/index.ts`)                                                            |
 | Content (metafields/metaobjects) | New `lib/shopify/operations/content/server.ts` (`fetch*`) + `lib/content-model/server.ts` (`get*`, tag `metaobjects`/`product-<handle>`) |
-| PDP blocks | Slot props on `ProductDetailSection` |
-| Pixel / GA4 | `addAnalyticsDestination` on the Hydrogen analytics bus |
-| Images | Global `next/image` custom loader in `next.config.ts` |
-| Setup page | Early return in `proxy.ts` when required env is missing in dev |
-| Navigation | Inline nav/footer items replaced by brand config (Shopify menus stay available via `enable-shopify-menus`) |
+| PDP blocks                       | Slot props on `ProductDetailSection`                                                                                                     |
+| Pixel / GA4                      | `addAnalyticsDestination` on the Hydrogen analytics bus                                                                                  |
+| Images                           | Global `next/image` custom loader in `next.config.ts`                                                                                    |
+| Setup page                       | Early return in `proxy.ts` when required env is missing in dev                                                                           |
+| Navigation                       | Inline nav/footer items replaced by brand config (Shopify menus stay available via `enable-shopify-menus`)                               |
