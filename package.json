@@ -3,14 +3,16 @@
   "version": "2026.11.0",
   "private": true,
   "scripts": {
-    "brand:assets": "node scripts/brand-assets.mts",
+    "brand:assets": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/brand-assets.mts",
     "build": "next build",
     "build:agent": "eve build",
     "dev": "next dev",
     "dev:portless": "portless shop next dev",
     "format": "oxfmt",
     "lint": "oxlint . && oxfmt --check",
-    "screenshots": "node scripts/screenshots.mts",
+    "screenshots": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/screenshots.mts",
+    "shopify:seed": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file-if-exists=.env.local scripts/shopify-seed.mts",
+    "shopify:setup": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file-if-exists=.env.local scripts/shopify-setup.mts",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit"
   },

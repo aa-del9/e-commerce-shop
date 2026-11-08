@@ -273,3 +273,16 @@ export type MetaobjectType = (typeof METAOBJECT_DEFINITIONS)[number]["type"];
 export const METAOBJECT_WEBHOOK_FILTER = METAOBJECT_DEFINITIONS.map(
   ({ type }) => `type:${type}`,
 ).join(" OR ");
+
+// Topics app/api/webhooks/shopify/route.ts turns into cache invalidations (products/*, collections/*, metaobjects/*).
+export const WEBHOOK_SUBSCRIPTIONS = [
+  { topic: "PRODUCTS_CREATE" },
+  { topic: "PRODUCTS_UPDATE" },
+  { topic: "PRODUCTS_DELETE" },
+  { topic: "COLLECTIONS_CREATE" },
+  { topic: "COLLECTIONS_UPDATE" },
+  { topic: "COLLECTIONS_DELETE" },
+  { filter: METAOBJECT_WEBHOOK_FILTER, topic: "METAOBJECTS_CREATE" },
+  { filter: METAOBJECT_WEBHOOK_FILTER, topic: "METAOBJECTS_UPDATE" },
+  { filter: METAOBJECT_WEBHOOK_FILTER, topic: "METAOBJECTS_DELETE" },
+] as const;
