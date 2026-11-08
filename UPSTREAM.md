@@ -38,7 +38,7 @@ Store repos sync from this base the same way (remote `base` instead of `upstream
   `lib/media/index.ts`, `lib/menu/index.ts`, `lib/whatsapp/**`, `lib/datetime/**`,
   `components/analytics/marketing-client.tsx`, `app/faq/**`, `app/contact/**`, `shopify/**`, `scripts/**`,
   `tests/**`, `e2e/**`, `docs/**`, `CLAUDE.md`, `.claude/settings.json`, `.claude/hooks/**`, `.mcp.json`,
-  `.github/**`, `.repo-role`, `vitest.config.ts`, `playwright.config.ts`, and the base skills in
+  `.github/**`, `.repo-role`, `vitest.config.mts`, `playwright.config.ts`, and the base skills in
   `.agents/skills/` (`configure-brand`, `apply-figma-theme`, `build-section-from-figma`, `add-content-type`,
   `verify`, `ship-change`, `sync-from-base`, `new-store-checklist`).
 - **Modified upstream files** (table below): take upstream's new version, then re-apply the base
