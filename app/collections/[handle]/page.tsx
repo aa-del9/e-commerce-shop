@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { CollectionResults } from "@/components/collections/browse";
+import { CollectionPageView } from "@/brand/pages/collection";
 import {
   CollectionBrowseBoundary,
   SearchParamsProbe,
@@ -35,7 +35,7 @@ async function DefaultCollectionResults({
   const { handle } = await params;
   return (
     <>
-      <CollectionResults results={getCollectionResults({ handle })} />
+      <CollectionPageView results={getCollectionResults({ handle })} />
       <SearchParamsProbe searchParams={searchParams} />
     </>
   );

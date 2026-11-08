@@ -1,10 +1,11 @@
 import { BotIdClient } from "botid/client";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
 import { Suspense } from "react";
 
+import { brand } from "@/brand/config";
+import { fontVariables } from "@/brand/fonts";
 import { ActionBar } from "@/components/action-bar";
 import { AgentButton } from "@/components/agent/agent-button";
 import { AnalyticsComponents } from "@/components/analytics";
@@ -21,18 +22,8 @@ import { shopConfig } from "@/lib/config";
 export const ensureStatic = "prefetch";
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: brand.seo.themeColor,
 };
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   // Un-awaited: the promise streams to the client provider; never block the shell on it.
@@ -43,9 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {shopConfig.botid.isEnabled && <BotIdClient protect={botIdProtectedRoutes} />}
         <CartStandardActionsScript />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased`}
-      >
+      <body className={`${fontVariables} flex min-h-dvh flex-col font-sans antialiased`}>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-background focus:px-5 focus:py-2 focus:text-sm focus:font-medium focus:shadow-lg focus:ring-2 focus:ring-foreground focus:outline-none"
@@ -75,15 +64,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
 export const generateMetadata = async (): Promise<Metadata> => {
   return {
-    description: `Shop premium products, curated collections, and latest offers from ${shopConfig.site.name}.`,
+    description: brand.seo.defaultDescription,
     generator: shopConfig.site.name,
     metadataBase: new URL(shopConfig.site.url),
     openGraph: {
-      images: [{ url: "/og-default.png", width: 1200, height: 628 }],
+      images: [{ url: brand.seo.defaultOgImage, width: 1200, height: 628 }],
     },
+    ...(brand.seo.twitterHandle
+      ? { twitter: { creator: brand.seo.twitterHandle, site: brand.seo.twitterHandle } }
+      : {}),
     title: {
       default: shopConfig.site.name,
-      template: `%s | ${shopConfig.site.name}`,
+      template: brand.seo.titleTemplate,
     },
   };
 };

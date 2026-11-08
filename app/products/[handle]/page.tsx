@@ -2,17 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { ProductPageView } from "@/brand/pages/product";
 import { ProductViewedTracker } from "@/components/analytics/trackers";
-import {
-  ProductDetailSection,
-  ProductDetailSkeleton,
-} from "@/components/product-detail/product-detail-section";
+import { ProductDetailSkeleton } from "@/components/product-detail/product-detail-section";
 import { RecentlyViewedRecorder } from "@/components/product-detail/recently-viewed";
-import { RelatedProductsSection } from "@/components/product/related-products-section";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
-import { shopConfig } from "@/lib/config";
 import { defaultSelectedOptions, parseSelectedOptions, toSelectedOptionList } from "@/lib/product";
 import { getProduct, getSearchIndexProducts } from "@/lib/product/server";
 import { type SelectedOptions } from "@/lib/product/types";
@@ -146,14 +142,11 @@ async function ProductPageContent({
           title: product.title,
         }}
       />
-      <ProductDetailSection
+      <ProductPageView
         product={product}
         selectedOptionsPromise={selectedOptionsPromise}
         variantPromise={variantPromise}
       />
-      {shopConfig.pdp.relatedProducts.isEnabled ? (
-        <RelatedProductsSection handle={handle} limit={4} />
-      ) : null}
     </>
   );
 }

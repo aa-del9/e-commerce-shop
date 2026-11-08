@@ -2,6 +2,7 @@ import { withBotId } from "botid/next/config";
 import { withEve } from "eve/next";
 import type { NextConfig } from "next";
 
+import { withBrand } from "./lib/brand/server";
 import { shopConfig } from "./lib/config";
 import { withShopConfig } from "./lib/config/server";
 
@@ -10,6 +11,8 @@ const nextConfig: NextConfig = {
   images: {
     deviceSizes: [1320, 1920],
     imageSizes: [],
+    loader: "custom",
+    loaderFile: "./lib/media/index.ts",
     minimumCacheTTL: 31536000,
     remotePatterns: [
       {
@@ -32,6 +35,7 @@ const nextConfig: NextConfig = {
 };
 
 export default withShopConfig(nextConfig, [
+  withBrand,
   shopConfig.botid.isEnabled && withBotId,
   shopConfig.agent.isEnabled && withEve,
 ]);

@@ -122,7 +122,7 @@ function SearchDialogContent({ onClose, open }: { onClose: () => void; open: boo
   const show = hasQuery ? results !== null || isLoading : products.length > 0;
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Backdrop className="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 fixed inset-0 z-60 bg-black/30 backdrop-blur-sm" />
+      <DialogPrimitive.Backdrop className="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 fixed inset-0 z-60 bg-overlay/30 backdrop-blur-sm" />
       <DialogPrimitive.Popup
         aria-describedby={undefined}
         className="fixed inset-0 z-60 flex justify-center pt-[15vh] px-4 outline-none"

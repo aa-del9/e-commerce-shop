@@ -1,10 +1,11 @@
 import { PredictiveSearchProvider } from "@shopify/hydrogen/react";
 import { Suspense } from "react";
 
+import { BrandLogo } from "@/brand/sections/logo";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/components/ui/link";
 import { shopConfig } from "@/lib/config";
-import type { MenuItem } from "@/lib/menu/types";
+import { getBrandMainMenu } from "@/lib/menu";
 
 import { NavAccount, NavAccountFallback } from "./account";
 import { CartIcon, CartIconFallback } from "./cart";
@@ -13,9 +14,7 @@ import { QuickLinks } from "./quick-links";
 import { SearchModal } from "./search-modal";
 
 export function Nav() {
-  const items: MenuItem[] = [
-    { id: "default-nav-shop", items: [], title: "Shop", url: "/collections/all" },
-  ];
+  const items = getBrandMainMenu();
   return (
     <nav
       className="sticky top-0 z-30 w-full bg-background pt-[env(safe-area-inset-top,0px)] transition-shadow duration-250"
@@ -25,7 +24,7 @@ export function Nav() {
         <MobileMenu items={items} />
 
         <Link className="flex items-center shrink-0" href="/">
-          <span className="text-xl leading-4">{shopConfig.site.name}</span>
+          <BrandLogo />
         </Link>
 
         <QuickLinks items={items} />

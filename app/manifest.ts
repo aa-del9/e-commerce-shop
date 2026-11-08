@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 
+import { brand } from "@/brand/config";
 import { shopConfig } from "@/lib/config";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    background_color: "#ffffff",
+    background_color: brand.seo.themeColor,
     description: shopConfig.site.description,
     display: "standalone",
     icons: [
@@ -20,6 +21,6 @@ export default function manifest(): MetadataRoute.Manifest {
     name: shopConfig.site.name,
     short_name: shopConfig.site.name,
     start_url: "/",
-    theme_color: "#ffffff",
+    theme_color: brand.seo.themeColor,
   };
 }

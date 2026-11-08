@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { CollectionResults } from "@/components/collections/browse";
+import { CollectionPageView } from "@/brand/pages/collection";
 import {
   CollectionBrowseBoundary,
   SearchParamsProbe,
@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function AllProductsPage({ searchParams }: PageProps<"/collections/all">) {
   return (
     <CollectionBrowseBoundary>
-      <CollectionResults results={getAllProductsResults()} />
+      <CollectionPageView results={getAllProductsResults()} />
       <SearchParamsProbe searchParams={searchParams} />
     </CollectionBrowseBoundary>
   );

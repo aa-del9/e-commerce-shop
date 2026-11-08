@@ -1,10 +1,12 @@
 import { cn } from "cn";
 
+import { brand } from "@/brand/config";
 import { MenuLink } from "@/components/nav/menu-link";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/components/ui/link";
 import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
+import { getBrandFooterMenu } from "@/lib/menu";
 import type { MenuItem } from "@/lib/menu/types";
 import { getShopPolicies } from "@/lib/policies/server";
 
@@ -12,8 +14,10 @@ import { SocialLinks } from "./social-links";
 import type { SocialLink } from "./social-links";
 
 export async function Footer() {
-  const socialLinks: SocialLink[] = [];
-  const items: MenuItem[] = [];
+  const socialLinks = Object.entries(brand.identity.social).flatMap(([platform, url]) =>
+    url ? [{ platform, url } as SocialLink] : [],
+  );
+  const items = getBrandFooterMenu();
   const policies = await getShopPolicies({}).catch(() => []);
   return (
     <footer>

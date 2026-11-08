@@ -1,0 +1,55 @@
+/*
+ * Design tokens for this store. The only place colors, radius, shadows and type sizes are set.
+ * app/globals.css maps these variables into Tailwind (bg-primary, rounded-lg, shadow-floating…).
+ * The base ships a neutral, monochrome look; apply-figma-theme rewrites this file from Figma.
+ * Light mode only: the template has no dark-mode tokens.
+ */
+
+:root {
+  /* Surfaces and text */
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+
+  /* Actions */
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f2f2;
+  --secondary-foreground: #111111;
+  --accent: #f5f5f5;
+  --accent-foreground: #111111;
+
+  /* Quiet text and fills */
+  --muted: #f2f2f2;
+  --muted-foreground: #6b6b6b;
+
+  /* Lines and focus */
+  --border: #e3e3e3;
+  --input: #efefef;
+  --ring: #6b6b6b;
+
+  /* States */
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
+  --positive: #1f7a45;
+  --positive-foreground: #ffffff;
+  --warning: #fdf6e3;
+  --warning-border: #f0e0b0;
+  --warning-foreground: #6b4e00;
+
+  /* Dims the page behind drawers, dialogs and the image viewer */
+  --overlay: #000000;
+
+  /* Shape */
+  --radius: 0.5rem;
+  --shadow-floating-value: 0 2px 8px 0 rgb(0 0 0 / 0.12);
+
+  /* Type: font families come from brand/fonts.ts */
+  --font-body: var(--font-brand-sans);
+  --font-code: var(--font-brand-mono);
+  --text-scale-display: 3rem;
+  --text-scale-display-mobile: 2rem;
+}

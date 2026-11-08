@@ -1,55 +1,61 @@
-import type { ShopConfig } from "./types";
+import { brand } from "../../brand/config";
+import type { CommerceLocale, ShopConfig } from "./types";
 
-const defaultUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : "http://localhost:3000";
+// Base adapter: every value below is derived from brand/config.ts; edit that file, not this one.
+const defaultUrl =
+  brand.identity.siteUrl ??
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
 
 export const shopConfig = {
   agent: {
-    isEnabled: false,
+    isEnabled: brand.features.agent,
   },
   analytics: {
     shopify: {
       consent: {
-        isEnabled: false,
+        isEnabled: brand.analytics.shopifyConsentBanner,
         mode: "default-banner",
       },
-      isEnabled: false,
+      isEnabled: brand.analytics.shopify,
     },
     speedInsights: {
-      isEnabled: false,
+      isEnabled: brand.analytics.speedInsights,
     },
     vercel: {
-      isEnabled: false,
+      isEnabled: brand.analytics.vercel,
     },
   },
   auth: {
-    isEnabled: false,
+    isEnabled: brand.features.customerAccounts,
   },
   botid: {
     checkLevel: "basic",
-    isEnabled: false,
+    isEnabled: brand.features.botProtection,
   },
   localization: {
-    country: "US",
-    language: "EN",
-    locale: "en-US" as const,
+    // Validated as two-letter codes at startup; Shopify rejects codes it does not know.
+    country: brand.localization.country as CommerceLocale["country"],
+    language: brand.localization.language as CommerceLocale["language"],
+    locale: brand.localization.locale,
   },
   pdp: {
     bundles: {
-      isEnabled: true,
+      isEnabled: brand.features.bundles,
     },
     buyWithShop: {
-      isEnabled: true,
+      isEnabled: false,
     },
     complementaryProducts: {
-      isEnabled: true,
+      isEnabled: brand.features.relatedProducts,
     },
     quantityPicker: {
       isEnabled: true,
     },
     relatedProducts: {
-      isEnabled: true,
+      isEnabled: brand.features.relatedProducts,
     },
   },
   redirects: {
@@ -58,7 +64,7 @@ export const shopConfig = {
     },
   },
   search: {
-    isEnabled: true,
+    isEnabled: brand.features.predictiveSearch,
   },
   shopify: {
     webmcp: {
@@ -66,9 +72,8 @@ export const shopConfig = {
     },
   },
   site: {
-    description:
-      "A Storefront Built on Vercel Shop. Agent-ready commerce, powered by Shopify, Next, and Eve.",
-    name: "Vercel Shop",
+    description: brand.seo.defaultDescription,
+    name: brand.identity.name,
     url: defaultUrl,
   },
 } satisfies ShopConfig;

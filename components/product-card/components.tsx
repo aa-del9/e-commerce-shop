@@ -72,7 +72,7 @@ function ProductCardImage({
         <ImagePlaceholder className="size-full" />
       )}
       {outOfStock && (
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+        <div className="absolute inset-0 bg-overlay/60 flex items-center justify-center">
           <span className="text-destructive-foreground font-medium text-xs px-2 py-1 bg-destructive rounded">
             {outOfStockText}
           </span>

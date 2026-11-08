@@ -55,3 +55,8 @@ progress.txt
 
 # opensrc - source code for packages
 opensrc/
+
+# base: local screenshots
+docs/maintainers/screenshots/
+test-results/
+playwright-report/

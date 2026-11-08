@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 
+import { CartPageView } from "@/brand/pages/cart";
 import { CartViewedTracker } from "@/components/analytics/trackers";
-import { CartPageContent, CartPageSkeleton } from "@/components/cart/cart-page";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -18,9 +17,7 @@ export default function CartPage() {
   return (
     <>
       <CartViewedTracker />
-      <Suspense fallback={<CartPageSkeleton />}>
-        <CartPageContent />
-      </Suspense>
+      <CartPageView />
     </>
   );
 }

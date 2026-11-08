@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { CollectionResults } from "@/components/collections/browse";
+import { CollectionPageView } from "@/brand/pages/collection";
 import { CollectionBrowseBoundary } from "@/components/collections/collection-page";
 import {
   fetchCollectionResults,
@@ -32,5 +32,5 @@ async function RefinedCollectionResults({
 }: PageProps<"/collections/[handle]/refine">) {
   const { handle } = await params;
   const statePromise = readBrowseState(searchParams);
-  return <CollectionResults results={fetchCollectionResults({ handle, statePromise })} />;
+  return <CollectionPageView results={fetchCollectionResults({ handle, statePromise })} />;
 }
