@@ -1,4 +1,4 @@
-# Base setup progress
+# Base setup log
 
 Resume protocol: read this file, `git log --oneline`, `docs/maintainers/template-notes.md` and
 `docs/maintainers/decisions/run-log.md`, then continue at the first unticked item.
@@ -15,21 +15,21 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - [x] Step 5: Environment variables (`.env.example`, `lib/env`, setup page, `env:check`, docs)
 - [x] Step 6: AI-assisted development (CLAUDE.md, skills, `.mcp.json`, settings, hooks)
 - [x] Step 7: Quality gates (Vitest, Playwright, `verify`, CI, templates, CODEOWNERS, repo-setup doc)
-- [ ] Step 8: Documentation (README, PM docs, maintainer docs, ADRs)
+- [x] Step 8: Documentation (README, PM docs, maintainer docs, ADRs)
 
 ## Definition of done
 
 - [x] `pnpm install && pnpm dev` works with only `.env.example` copied to `.env.local` (friendly setup page)
-- [ ] With dev store credentials: storefront flows, PKR prices, clean neutral theme at 360/1280
-- [ ] `pnpm verify` passes; CI green on the PR
-- [ ] No brand/category strings or values outside `brand/`
-- [ ] Every feature flag works on/off; content blocks render nothing when empty
+- ❌ With dev store credentials: storefront flows, PKR prices, clean neutral theme at 360/1280 — no dev store available (`<DEV_STORE>` placeholder); flows verified on mock.shop instead, PKR via unit tests
+- [x] `pnpm verify` passes; CI green on the PR (see PR checks)
+- [x] No brand/category strings or values outside `brand/` (documented exceptions)
+- [x] Every feature flag works on/off; content blocks render nothing when empty (agent/botProtection not run live)
 - [x] `pnpm shopify:setup --dry-run` runs and prints plan + manual checklist (no dev store: planned against an empty store)
-- [ ] Eve, BotID, i18n, Markets disabled via config, not deleted
-- [ ] `UPSTREAM.md` lists every modified upstream file with a reason
-- [ ] All listed docs exist and match the final code
+- [x] Eve, BotID, i18n, Markets disabled via config, not deleted
+- [x] `UPSTREAM.md` lists every modified upstream file with a reason
+- [x] All listed docs exist and match the final code
 - [x] Guard hook blocks an edit outside `brand/` with `.repo-role=store`; role restored to `base` (hook script driven with PreToolUse payloads)
-- [ ] Branch `base-setup` pushed and PR open to `main`
+- [x] Branch `base-setup` pushed and PR open to `main`
 
 ## Notes
 
@@ -41,3 +41,4 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - Step 5: lib/env single list → .env.example, docs/04, setup page (verified 503 page), build fail-fast (verified), env:check.
 - Step 6: CLAUDE.md, docs/ai/brand-layer.md, 8 skills, .mcp.json (Figma remote https://mcp.figma.com/mcp verified on developers.figma.com), settings + guard/format hooks tested.
 - Step 7: 38 Vitest tests; Playwright smoke (6/6 pass vs local mock.shop with E2E_PRODUCT_PATH); verify script; CI (no next build, by design); templates; CODEOWNERS; repo-setup doc.
+- Step 8: README, PM docs 01–09 + index, architecture, roadmap, ADRs 001–006, final report (`base-setup-report.md`).
