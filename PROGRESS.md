@@ -9,8 +9,8 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 
 - [x] Step 0: Understand the template → `docs/maintainers/template-notes.md`
 - [x] Step 1: Repo foundations (toolchain, upstream remote, `UPSTREAM.md`, `.repo-role`)
-- [ ] Step 2: Brand layer (`brand/`, schema, adapter, route shells, theme, token sweep)
-- [ ] Step 3: Storefront defaults (images, PK localization, announcement, WhatsApp, PDP blocks, preorders, FAQ, home sections, SEO, analytics)
+- [x] Step 2: Brand layer (`brand/`, schema, adapter, route shells, theme, token sweep)
+- [x] Step 3: Storefront defaults (images, PK localization, announcement, WhatsApp, PDP blocks, preorders, FAQ, home sections, SEO, analytics)
 - [ ] Step 4: Shopify content model as code + setup/seed scripts
 - [ ] Step 5: Environment variables (`.env.example`, `lib/env`, setup page, `env:check`, docs)
 - [ ] Step 6: AI-assisted development (CLAUDE.md, skills, `.mcp.json`, settings, hooks)
@@ -35,3 +35,5 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 
 - Step 0: upstream mapped; no demo mode upstream; metaobjects webhook tag already exists.
 - Step 1: install/lint/typecheck pass on Node 26; `pnpm dev` without env crashes in next.config (baseline); `upstream` remote added.
+- Step 2: brand/ layer, adapter, theme tokens, fonts, route shells, neutral assets (`pnpm brand:assets`); token sweep in 11 upstream components.
+- Step 3: store-content loaders (metafields/metaobjects), PDP slots, announcement/WhatsApp/FAQ/contact/home sections, CDN loader, PKR display, robots, Pixel+GA4 on the bus (CAPI stubbed). Checked on mock.shop (empty content state).
