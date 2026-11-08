@@ -1,22 +1,22 @@
-import {
-  ProductDetailSection,
-  type ProductDetailSlots,
-} from "@/components/product-detail/product-detail-section";
+import { ProductHeaderBlocks } from "@/brand/sections/product/product-header-blocks";
+import { ProductInfoBlocks } from "@/brand/sections/product/product-info-blocks";
+import { ProductDetailSection } from "@/components/product-detail/product-detail-section";
 import { RelatedProductsSection } from "@/components/product/related-products-section";
 import { shopConfig } from "@/lib/config";
 import type { ProductDetails, ProductVariant, SelectedOptions } from "@/lib/product/types";
+import type { ProductContent } from "@/lib/store-content/types";
 
 interface ProductPageViewProps {
+  content: ProductContent | undefined;
   product: ProductDetails;
   selectedOptionsPromise: Promise<SelectedOptions>;
-  slots?: ProductDetailSlots;
   variantPromise: Promise<ProductVariant | undefined>;
 }
 
 export function ProductPageView({
+  content,
   product,
   selectedOptionsPromise,
-  slots,
   variantPromise,
 }: ProductPageViewProps) {
   return (
@@ -24,7 +24,16 @@ export function ProductPageView({
       <ProductDetailSection
         product={product}
         selectedOptionsPromise={selectedOptionsPromise}
-        slots={slots}
+        slots={{
+          afterBuyButtons: (
+            <ProductInfoBlocks
+              content={content}
+              path={`/products/${product.handle}`}
+              title={product.title}
+            />
+          ),
+          afterPrice: <ProductHeaderBlocks content={content} />,
+        }}
         variantPromise={variantPromise}
       />
       {shopConfig.pdp.relatedProducts.isEnabled ? (

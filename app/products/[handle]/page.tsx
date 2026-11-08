@@ -16,6 +16,7 @@ import type { ProductVariant } from "@/lib/product/types";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 import { fetchProductVariant } from "@/lib/shopify/operations/products/server";
 import { PLACEHOLDER_HANDLE } from "@/lib/static-params";
+import { getProductContent } from "@/lib/store-content/server";
 
 async function buildProductMetadata(handle: string, canonicalPath: string): Promise<Metadata> {
   const product = await getProduct({
@@ -91,9 +92,12 @@ async function ProductPageContent({
 }: Pick<PageProps<"/products/[handle]">, "params" | "searchParams">) {
   const { handle } = await params;
   if (handle === PLACEHOLDER_HANDLE) notFound();
-  const product = await getProduct({
-    handle,
-  });
+  const [product, content] = await Promise.all([
+    getProduct({
+      handle,
+    }),
+    getProductContent(handle),
+  ]);
   if (!product) notFound();
 
   // Keep selection separate from the variant query so the static shell stays coherent and the picker never waits on Shopify.
@@ -143,6 +147,7 @@ async function ProductPageContent({
         }}
       />
       <ProductPageView
+        content={content}
         product={product}
         selectedOptionsPromise={selectedOptionsPromise}
         variantPromise={variantPromise}

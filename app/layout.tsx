@@ -6,6 +6,8 @@ import { Suspense } from "react";
 
 import { brand } from "@/brand/config";
 import { fontVariables } from "@/brand/fonts";
+import { AnnouncementBar } from "@/brand/sections/announcement-bar";
+import { WhatsAppButton } from "@/brand/sections/whatsapp-button";
 import { ActionBar } from "@/components/action-bar";
 import { AgentButton } from "@/components/agent/agent-button";
 import { AnalyticsComponents } from "@/components/analytics";
@@ -44,12 +46,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteSchema />
 
         <CartProviderWrapper cartData={cartData}>
+          <Suspense fallback={null}>
+            <AnnouncementBar />
+          </Suspense>
           <Nav />
           <main id="main-content" className="flex flex-1 flex-col min-w-0">
             {children}
           </main>
           <Footer />
           <CartUI />
+          {brand.features.whatsappButton ? (
+            <WhatsAppButton
+              defaultMessage={`Hi ${brand.identity.name}, I have a question.`}
+              label="Chat with us on WhatsApp"
+              raised={shopConfig.agent.isEnabled}
+              siteUrl={shopConfig.site.url}
+            />
+          ) : null}
           <Suspense>
             <ActionBar>{shopConfig.agent.isEnabled && <AgentButton />}</ActionBar>
           </Suspense>

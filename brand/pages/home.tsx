@@ -1,34 +1,39 @@
 import { brand } from "@/brand/config";
+import { DefaultHero, HomeSectionView } from "@/brand/sections/home/home-sections";
 import { ProductsGrid } from "@/components/product/products-grid";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
+import type { HomeSection } from "@/lib/store-content/types";
 
-export function HomePageView() {
+// Content: "Home section" entries in Shopify admin → Content → Metaobjects, shown by sort order.
+export function HomePageView({ sections }: { sections: HomeSection[] }) {
+  if (sections.length === 0) {
+    return (
+      <Page className="pt-0">
+        <Sections>
+          <DefaultHero />
+          <Container>
+            <ProductsGrid
+              collectionUrl="/collections/all"
+              eagerCount={4}
+              limit={8}
+              title="Products"
+            />
+          </Container>
+        </Sections>
+      </Page>
+    );
+  }
+  const [first] = sections;
+  const hasHeading = first?.type === "hero" && !!first.heading;
   return (
     <Page className="pt-0">
+      {hasHeading ? null : <h1 className="sr-only">{brand.identity.name}</h1>}
       <Sections>
-        <section className="grid grid-cols-1">
-          <div className="col-start-1 row-start-1 hidden md:block md:aspect-4/1" />
-          <div className="relative col-start-1 row-start-1 flex items-center justify-center px-5 py-10 lg:px-10">
-            <div className="flex flex-col items-center text-center gap-2.5">
-              <h1 className="text-display-mobile md:text-display max-w-3xl text-foreground">
-                {brand.identity.name}
-              </h1>
-              <p className="text-sm md:text-base max-w-xl text-muted-foreground">
-                {brand.identity.tagline}
-              </p>
-            </div>
-          </div>
-        </section>
-        <Container>
-          <ProductsGrid
-            title="Products"
-            eagerCount={4}
-            limit={8}
-            collectionUrl="/collections/all"
-          />
-        </Container>
+        {sections.map((section, index) => (
+          <HomeSectionView isFirst={index === 0} key={section.id} section={section} />
+        ))}
       </Sections>
     </Page>
   );

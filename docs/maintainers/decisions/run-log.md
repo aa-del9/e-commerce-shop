@@ -46,3 +46,29 @@ Decisions made during the unattended base-setup run. Each entry: decision, alter
 - **Decision:** `shopConfig.pdp.buyWithShop.isEnabled` is `false` in the adapter.
 - **Why:** Shop Pay is not available to Pakistani merchants; the button would fail.
 - **Reverse:** set it back to `true` in `lib/config/index.ts` (base change).
+
+## R7. Meta Conversions API stubbed, not built
+
+- **Decision:** no server-side CAPI route. Browser events already carry a shared `event_id` (Pixel `eventID`, GA4 `event_id`), so a later CAPI sender can deduplicate.
+- **Alternatives:** a `/api/analytics/meta` route that forwards AddToCart with `META_CAPI_ACCESS_TOKEN`.
+- **Why:** an unauthenticated public route lets anyone inject fake conversions; doing it safely needs rate limiting and request signing (real complexity). Shopify's Facebook & Instagram app already sends server-side Purchase events.
+- **Reverse:** see `docs/maintainers/roadmap.md` → "Meta Conversions API".
+
+## R8. Marketing destinations gated on the server
+
+- **Decision:** `getMarketingConfig()` runs in the `AnalyticsComponents` server component and passes IDs as props; nothing reads `VERCEL_ENV` in client code.
+- **Why:** `shopConfig` is read by client components, and a server-only env var there would differ between server and browser render.
+- **Reverse:** remove `getMarketingConfig()` and the `MarketingDestinations` line in `components/analytics/index.tsx`.
+
+## R9. Announcement windows filtered at cache time
+
+- **Decision:** `getAnnouncements()` filters by `starts_at`/`ends_at` inside the cache scope and sets `cacheLife({ revalidate })` to the next boundary (minimum 5 minutes), otherwise `max`.
+- **Alternatives:** filter in the browser (layout shift, flash of expired text).
+- **Why:** keeps the bar in the static shell; Shopify sends no webhook when a window opens or closes.
+- **Reverse:** `lib/store-content/server.ts`.
+
+## R10. Local visual checks against mock.shop
+
+- **Decision:** screenshots in this run used `mock.shop` (Shopify's public mock Storefront API) through a gitignored `.env.local`. No dev store credentials were available.
+- **Why:** lets the storefront render without credentials for visual checks. It has no metaobjects, so content blocks were checked in their empty state, and prices are CAD.
+- **Reverse:** n/a (local only). Not documented as a supported mode.
