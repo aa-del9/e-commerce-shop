@@ -13,7 +13,7 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - [x] Step 3: Storefront defaults (images, PK localization, announcement, WhatsApp, PDP blocks, preorders, FAQ, home sections, SEO, analytics)
 - [x] Step 4: Shopify content model as code + setup/seed scripts
 - [x] Step 5: Environment variables (`.env.example`, `lib/env`, setup page, `env:check`, docs)
-- [ ] Step 6: AI-assisted development (CLAUDE.md, skills, `.mcp.json`, settings, hooks)
+- [x] Step 6: AI-assisted development (CLAUDE.md, skills, `.mcp.json`, settings, hooks)
 - [ ] Step 7: Quality gates (Vitest, Playwright, `verify`, CI, templates, CODEOWNERS, repo-setup doc)
 - [ ] Step 8: Documentation (README, PM docs, maintainer docs, ADRs)
 
@@ -28,7 +28,7 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - [ ] Eve, BotID, i18n, Markets disabled via config, not deleted
 - [ ] `UPSTREAM.md` lists every modified upstream file with a reason
 - [ ] All listed docs exist and match the final code
-- [ ] Guard hook blocks an edit outside `brand/` with `.repo-role=store`; role restored to `base`
+- [x] Guard hook blocks an edit outside `brand/` with `.repo-role=store`; role restored to `base` (hook script driven with PreToolUse payloads)
 - [ ] Branch `base-setup` pushed and PR open to `main`
 
 ## Notes
@@ -39,3 +39,4 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - Step 3: store-content loaders (metafields/metaobjects), PDP slots, announcement/WhatsApp/FAQ/contact/home sections, CDN loader, PKR display, robots, Pixel+GA4 on the bus (CAPI stubbed). Checked on mock.shop (empty content state).
 - Step 4: shopify/schema.ts + plan.ts, setup (dry-run verified without creds) and seed scripts; links stored as text (R11).
 - Step 5: lib/env single list → .env.example, docs/04, setup page (verified 503 page), build fail-fast (verified), env:check.
+- Step 6: CLAUDE.md, docs/ai/brand-layer.md, 8 skills, .mcp.json (Figma remote https://mcp.figma.com/mcp verified on developers.figma.com), settings + guard/format hooks tested.
