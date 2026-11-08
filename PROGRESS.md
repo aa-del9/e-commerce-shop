@@ -14,7 +14,7 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - [x] Step 4: Shopify content model as code + setup/seed scripts
 - [x] Step 5: Environment variables (`.env.example`, `lib/env`, setup page, `env:check`, docs)
 - [x] Step 6: AI-assisted development (CLAUDE.md, skills, `.mcp.json`, settings, hooks)
-- [ ] Step 7: Quality gates (Vitest, Playwright, `verify`, CI, templates, CODEOWNERS, repo-setup doc)
+- [x] Step 7: Quality gates (Vitest, Playwright, `verify`, CI, templates, CODEOWNERS, repo-setup doc)
 - [ ] Step 8: Documentation (README, PM docs, maintainer docs, ADRs)
 
 ## Definition of done
@@ -40,3 +40,4 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - Step 4: shopify/schema.ts + plan.ts, setup (dry-run verified without creds) and seed scripts; links stored as text (R11).
 - Step 5: lib/env single list → .env.example, docs/04, setup page (verified 503 page), build fail-fast (verified), env:check.
 - Step 6: CLAUDE.md, docs/ai/brand-layer.md, 8 skills, .mcp.json (Figma remote https://mcp.figma.com/mcp verified on developers.figma.com), settings + guard/format hooks tested.
+- Step 7: 38 Vitest tests; Playwright smoke (6/6 pass vs local mock.shop with E2E_PRODUCT_PATH); verify script; CI (no next build, by design); templates; CODEOWNERS; repo-setup doc.
