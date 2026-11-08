@@ -128,7 +128,12 @@ export const METAOBJECT_DEFINITIONS = [
     displayNameKey: "text",
     fields: [
       { key: "text", name: "Text", required: true, type: "single_line_text_field" },
-      { key: "link", name: "Link", type: "url" },
+      {
+        description: 'A site path like "/collections/new" or a full https:// address.',
+        key: "link",
+        name: "Link",
+        type: "single_line_text_field",
+      },
       {
         description: "Leave empty to show immediately.",
         key: "starts_at",
@@ -174,7 +179,12 @@ export const METAOBJECT_DEFINITIONS = [
       { key: "heading", name: "Heading", type: "single_line_text_field" },
       { key: "body", name: "Body", type: "multi_line_text_field" },
       { key: "image", name: "Image", type: "file_reference", validations: [IMAGE_ONLY] },
-      { key: "link", name: "Link", type: "url" },
+      {
+        description: 'A site path like "/collections/new" or a full https:// address.',
+        key: "link",
+        name: "Link",
+        type: "single_line_text_field",
+      },
       { key: "link_label", name: "Link label", type: "single_line_text_field" },
       {
         description: "For featured collection sections.",

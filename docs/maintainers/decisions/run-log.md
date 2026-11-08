@@ -72,3 +72,9 @@ Decisions made during the unattended base-setup run. Each entry: decision, alter
 - **Decision:** screenshots in this run used `mock.shop` (Shopify's public mock Storefront API) through a gitignored `.env.local`. No dev store credentials were available.
 - **Why:** lets the storefront render without credentials for visual checks. It has no metaobjects, so content blocks were checked in their empty state, and prices are CAD.
 - **Reverse:** n/a (local only). Not documented as a supported mode.
+
+## R11. Links in metaobjects are single-line text
+
+- **Decision:** `announcement.link` and `home_section.link` are `single_line_text_field`, not `url`.
+- **Why:** Shopify's `url` type only accepts absolute URLs with a scheme, and the PM mostly links to site paths like `/collections/new`.
+- **Reverse:** a new field key with type `url` (types cannot change in place).
