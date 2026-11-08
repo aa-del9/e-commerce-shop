@@ -3,8 +3,8 @@ import type { CommerceLocale, ShopConfig } from "./types";
 
 // Base adapter: every value below is derived from brand/config.ts; edit that file, not this one.
 const defaultUrl =
-  brand.identity.siteUrl ??
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  brand.identity.siteUrl ||
+  process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "http://localhost:3000");

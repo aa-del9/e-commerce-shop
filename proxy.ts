@@ -18,6 +18,7 @@ import {
 import { cartHandlers, createCustomerCartHandlers } from "@/lib/cart/request";
 import { getRefinedCollectionPath, isRefinedCollectionPath } from "@/lib/collections";
 import { shopConfig } from "@/lib/config";
+import { getSetupPageResponse } from "@/lib/env/request";
 import { getMarkdownRewritePath } from "@/lib/markdown/representation";
 import { predictiveSearchHandlers } from "@/lib/search/request";
 import { SHOPIFY_ROUTE_TEMPLATES } from "@/lib/shopify/routing";
@@ -31,6 +32,9 @@ const AUTH_PATHS = new Set<string>([
 ]);
 
 export async function proxy(request: NextRequest): Promise<Response> {
+  // Base: in `next dev`, missing or placeholder credentials show a setup page instead of crashing.
+  const setupPage = getSetupPageResponse({ customerAccounts: shopConfig.auth.isEnabled });
+  if (setupPage) return setupPage;
   const pathname = request.nextUrl.pathname;
   const requestContext = createCustomerRequestContext(request);
   const isAuthPath = shopConfig.auth.isEnabled && AUTH_PATHS.has(pathname);

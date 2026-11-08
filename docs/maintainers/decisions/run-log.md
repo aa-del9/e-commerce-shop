@@ -78,3 +78,17 @@ Decisions made during the unattended base-setup run. Each entry: decision, alter
 - **Decision:** `announcement.link` and `home_section.link` are `single_line_text_field`, not `url`.
 - **Why:** Shopify's `url` type only accepts absolute URLs with a scheme, and the PM mostly links to site paths like `/collections/new`.
 - **Reverse:** a new field key with type `url` (types cannot change in place).
+
+## R12. `.env.example` placeholders are `__REPLACE_ME__`
+
+- **Decision:** required variables use `__REPLACE_ME__`; optional ones are commented out. `lib/env` also treats upstream's example values (`your-store.myshopify.com`, `your-…-here`) as unset.
+- **Alternatives:** upstream AGENTS.md asks for realistic placeholders.
+- **Why:** the brief asks for `__REPLACE_ME__`, which the setup page and `env:check` can detect reliably. Empty optional values would override upstream `??` defaults (for example `SHOPIFY_API_VERSION=""`).
+- **Reverse:** edit `renderEnvExample` in `scripts/env-example.mts`.
+
+## R13. Scripts import app modules through a resolve hook
+
+- **Decision:** `scripts/lib/ts-resolve.mts` registers a Node module hook that resolves extensionless imports and the `@/` alias, so `pnpm env:check` can load `brand/config.ts`.
+- **Alternatives:** add `tsx` as a dependency, or enable `allowImportingTsExtensions` in tsconfig.
+- **Why:** no new dependency and no upstream tsconfig change; Node 26 runs TypeScript natively.
+- **Reverse:** delete the hook and import only self-contained modules.

@@ -4,6 +4,7 @@ import {
   PHASE_PRODUCTION_SERVER,
 } from "next/constants";
 
+import { checkEnv, formatEnvReport } from "../env";
 import { shopConfig } from "./index";
 import type {
   NextConfigContext,
@@ -18,32 +19,19 @@ function assertRequiredEnv(phase: string) {
   // Next typegen uses the production-build phase but does not need Shopify credentials.
   if (process.argv.includes("typegen")) return;
 
-  const missingShopify = [
-    "NEXT_PUBLIC_SHOPIFY_SHOP_ID",
-    "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN",
-    "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN",
-  ].filter((key) => !process.env[key]);
-
-  if (missingShopify.length > 0) {
-    throw new Error(
-      `Missing required Shopify environment variables: ${missingShopify.join(", ")}. See .env.example.`,
+  // Base: one report for dev, build and `pnpm env:check`; dev continues and proxy.ts shows a setup page.
+  const report = checkEnv(process.env, { customerAccounts: shopConfig.auth.isEnabled });
+  if (report.ok) return;
+  const table = formatEnvReport(report);
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    console.warn(
+      `\nThe store is not fully configured; pages show a setup checklist until these are set in .env.local:\n${table}\n`,
     );
+    return;
   }
-
-  if (shopConfig.auth.isEnabled) {
-    const missing = [
-      "CUSTOMER_ACCOUNT_SESSION_SECRET",
-      "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID",
-      "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET",
-    ].filter((key) => !process.env[key]);
-
-    if (missing.length > 0) {
-      throw new Error(
-        `Enabled auth requires: ${missing.join(", ")}. ` +
-          `Set the missing variables or disable auth via auth.isEnabled in lib/config/index.ts.`,
-      );
-    }
-  }
+  throw new Error(
+    `Missing or invalid environment variables:\n${table}\nSet them in Vercel → Project → Settings → Environment Variables (see docs/04-environment-variables.md).`,
+  );
 }
 
 async function resolveConfig(config: NextConfigInput, phase: string, context: NextConfigContext) {

@@ -8,6 +8,8 @@
     "build:agent": "eve build",
     "dev": "next dev",
     "dev:portless": "portless shop next dev",
+    "env:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file-if-exists=.env.local scripts/env-check.mts",
+    "env:example": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/env-example.mts",
     "format": "oxfmt",
     "lint": "oxlint . && oxfmt --check",
     "screenshots": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/screenshots.mts",
