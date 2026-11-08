@@ -7,8 +7,8 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 
 ## Steps
 
-- [ ] Step 0: Understand the template → `docs/maintainers/template-notes.md`
-- [ ] Step 1: Repo foundations (toolchain, upstream remote, `UPSTREAM.md`, `.repo-role`)
+- [x] Step 0: Understand the template → `docs/maintainers/template-notes.md`
+- [x] Step 1: Repo foundations (toolchain, upstream remote, `UPSTREAM.md`, `.repo-role`)
 - [ ] Step 2: Brand layer (`brand/`, schema, adapter, route shells, theme, token sweep)
 - [ ] Step 3: Storefront defaults (images, PK localization, announcement, WhatsApp, PDP blocks, preorders, FAQ, home sections, SEO, analytics)
 - [ ] Step 4: Shopify content model as code + setup/seed scripts
@@ -32,3 +32,6 @@ Node: use Node 26 (`~/.local/share/fnm/node-versions/v26.13.0/installation/bin` 
 - [ ] Branch `base-setup` pushed and PR open to `main`
 
 ## Notes
+
+- Step 0: upstream mapped; no demo mode upstream; metaobjects webhook tag already exists.
+- Step 1: install/lint/typecheck pass on Node 26; `pnpm dev` without env crashes in next.config (baseline); `upstream` remote added.
