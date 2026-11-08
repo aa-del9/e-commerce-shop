@@ -1,0 +1,41 @@
+name: Something is broken
+description: Report a problem on the site.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What went wrong?
+      placeholder: The Add to Cart button does nothing on the product page.
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link to the page
+      placeholder: https://…
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What did you do just before?
+      placeholder: |
+        1. Opened the product
+        2. Picked size M
+        3. Tapped Add to Cart
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options:
+        - Phone (Android)
+        - Phone (iPhone)
+        - Computer
+        - Tablet
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot or screen recording
+      description: Drag files here.

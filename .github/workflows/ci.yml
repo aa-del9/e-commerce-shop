@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  cancel-in-progress: true
+  group: ci-${{ github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      # Reads the pnpm version from package.json "packageManager".
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          cache: pnpm
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      # lint + typecheck + unit tests + env check (warn-only: CI has no store credentials).
+      # `next build` is intentionally not run here: it fails fast without real Shopify credentials
+      # and needs network access; the Vercel preview build covers it (docs/maintainers/repo-setup.md).
+      - run: pnpm verify

@@ -16,7 +16,10 @@
     "shopify:seed": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file-if-exists=.env.local scripts/shopify-seed.mts",
     "shopify:setup": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file-if-exists=.env.local scripts/shopify-setup.mts",
     "start": "next start",
-    "typecheck": "next typegen && tsc --noEmit"
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "typecheck": "next typegen && tsc --noEmit",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm env:check --warn-only"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
@@ -50,7 +53,8 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
-    "@playwright/test": "1.65.0"
+    "@playwright/test": "1.65.0",
+    "vitest": "5.1.0"
   },
   "devEngines": {
     "runtime": {
