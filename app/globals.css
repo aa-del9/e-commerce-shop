@@ -1,15 +1,24 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../brand/theme.css";
 
 @plugin '@tailwindcss/typography';
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* Shop Pay purple is Shopify's brand color for the Buy with Shop button, not a store color. */
   --color-shop: #5A31F4;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
   --text-xxs: 0.625rem;
+  --text-display: var(--text-scale-display);
+  --text-display-mobile: var(--text-scale-display-mobile);
+  --color-overlay: var(--overlay);
+  --color-warning: var(--warning);
+  --color-warning-border: var(--warning-border);
+  --color-warning-foreground: var(--warning-foreground);
+  --shadow-floating: var(--shadow-floating-value);
   /* Headings track tighter as they grow (Geist behavior); attaches to every text-* utility. */
   --text-lg--letter-spacing: -0.01em;
   --text-xl--letter-spacing: -0.015em;
@@ -45,30 +54,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: #ffffff;
-  --foreground: #171717;
-  --card: #ffffff;
-  --card-foreground: #171717;
-  --popover: #ffffff;
-  --popover-foreground: #171717;
-  --primary: #000000;
-  --primary-foreground: #ffffff;
-  --secondary: #e9e9e9;
-  --secondary-foreground: #171717;
-  --muted: #e9e9e9;
-  --muted-foreground: #666666;
-  --accent: #efefef;
-  --accent-foreground: #171717;
-  --destructive: #cc0001;
-  --destructive-foreground: #f4f4f4;
-  --positive: #00ba5a;
-  --positive-foreground: #ffffff;
-  --border: #c8c8c8;
-  --input: #ececec;
-  --ring: #5a5a5a;
-}
+/* Token values live in brand/theme.css. */
 
 @layer components {
   .prose :where(h1, h2, h3, h4):not(:where([class~="not-prose"], [class~="not-prose"] *)) {

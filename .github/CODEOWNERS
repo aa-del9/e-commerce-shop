@@ -1,0 +1,7 @@
+# Everything outside the brand layer and docs needs the maintainer's review.
+*            @aa-del9
+
+# Store-editable areas: no required owner.
+/brand/
+/public/
+/docs/

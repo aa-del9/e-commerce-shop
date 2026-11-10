@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.mjs\"",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|Write|MultiEdit"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-paths.mjs\"",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit"
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm format:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm test:e2e:*)",
+      "Bash(pnpm verify:*)",
+      "Bash(pnpm env:check:*)",
+      "Bash(pnpm screenshots:*)",
+      "Bash(pnpm shopify:setup --dry-run:*)",
+      "Bash(pnpm shopify:seed --dry-run:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote -v:*)",
+      "Bash(cat .repo-role)"
+    ],
+    "ask": [
+      "Bash(git push origin main:*)",
+      "Bash(git push origin HEAD:main:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(pnpm shopify:setup)",
+      "Bash(pnpm shopify:seed)"
+    ],
+    "deny": ["Read(./.env.local)", "Read(./.env*.local)", "Bash(cat .env.local:*)"]
+  }
+}

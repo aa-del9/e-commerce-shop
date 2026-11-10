@@ -1,5 +1,6 @@
 import { formatMoney } from "@shopify/hydrogen";
 
+import { brand } from "@/brand/config";
 import { shopConfig } from "@/lib/config";
 import type { Money } from "@/lib/money/types";
 
@@ -7,11 +8,16 @@ export function formatCurrencySymbol(
   currencyCode: string,
   locale: string = shopConfig.localization.locale,
 ): string {
-  return formatMoney({ amount: "0", currencyCode }, { locale }).currencySymbol;
+  return formatMoney(
+    { amount: "0", currencyCode },
+    { currencyDisplay: brand.localization.currencyDisplay, locale },
+  ).currencySymbol;
 }
 
 export function formatPrice(money: Money, locale: string = shopConfig.localization.locale): string {
-  return formatMoney(money, { locale }).localizedString;
+  // "symbol" renders Rs 4,999 for PKR in en-PK; "code" renders PKR 4,999.
+  return formatMoney(money, { currencyDisplay: brand.localization.currencyDisplay, locale })
+    .localizedString;
 }
 
 // Shopify minor units follow each currency's ISO 4217 exponent, which Intl reports.

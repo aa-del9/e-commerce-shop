@@ -2,17 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { ProductPageView } from "@/brand/pages/product";
 import { ProductViewedTracker } from "@/components/analytics/trackers";
-import {
-  ProductDetailSection,
-  ProductDetailSkeleton,
-} from "@/components/product-detail/product-detail-section";
+import { ProductDetailSkeleton } from "@/components/product-detail/product-detail-section";
 import { RecentlyViewedRecorder } from "@/components/product-detail/recently-viewed";
-import { RelatedProductsSection } from "@/components/product/related-products-section";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
-import { shopConfig } from "@/lib/config";
 import { defaultSelectedOptions, parseSelectedOptions, toSelectedOptionList } from "@/lib/product";
 import { getProduct, getSearchIndexProducts } from "@/lib/product/server";
 import { type SelectedOptions } from "@/lib/product/types";
@@ -20,6 +16,7 @@ import type { ProductVariant } from "@/lib/product/types";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 import { fetchProductVariant } from "@/lib/shopify/operations/products/server";
 import { PLACEHOLDER_HANDLE } from "@/lib/static-params";
+import { getProductContent } from "@/lib/store-content/server";
 
 async function buildProductMetadata(handle: string, canonicalPath: string): Promise<Metadata> {
   const product = await getProduct({
@@ -95,9 +92,12 @@ async function ProductPageContent({
 }: Pick<PageProps<"/products/[handle]">, "params" | "searchParams">) {
   const { handle } = await params;
   if (handle === PLACEHOLDER_HANDLE) notFound();
-  const product = await getProduct({
-    handle,
-  });
+  const [product, content] = await Promise.all([
+    getProduct({
+      handle,
+    }),
+    getProductContent(handle),
+  ]);
   if (!product) notFound();
 
   // Keep selection separate from the variant query so the static shell stays coherent and the picker never waits on Shopify.
@@ -146,14 +146,12 @@ async function ProductPageContent({
           title: product.title,
         }}
       />
-      <ProductDetailSection
+      <ProductPageView
+        content={content}
         product={product}
         selectedOptionsPromise={selectedOptionsPromise}
         variantPromise={variantPromise}
       />
-      {shopConfig.pdp.relatedProducts.isEnabled ? (
-        <RelatedProductsSection handle={handle} limit={4} />
-      ) : null}
     </>
   );
 }

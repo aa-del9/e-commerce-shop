@@ -21,6 +21,11 @@ export default function robots(): MetadataRoute.Robots {
           "/collections/*?*filter.",
           "/*/collections/*?*sort=",
           "/*/collections/*?*filter.",
+          // Base: Hydrogen's sort parameter is `sort_by`, which the `sort=` patterns above do not match.
+          "/*?*sort_by=",
+          "/*?*filter.",
+          "/*?*q=",
+          "/collections/*/refine",
         ],
       },
     ],

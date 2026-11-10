@@ -10,7 +10,7 @@ function ImagePlaceholder({ className, iconClassName, ...props }: ImagePlacehold
   return (
     <div
       data-slot="image-placeholder"
-      className={cn("flex items-center justify-center bg-white", className)}
+      className={cn("flex items-center justify-center bg-background", className)}
       {...props}
     >
       <ImageIcon

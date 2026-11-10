@@ -41,13 +41,21 @@ import {
 import { type SelectedOptions } from "@/lib/product/types";
 import type { ProductDetails, ProductVariant } from "@/lib/product/types";
 
+// Base extension point: brand pages fill these slots with content blocks; empty slots render nothing.
+export interface ProductDetailSlots {
+  afterBuyButtons?: ReactNode;
+  afterPrice?: ReactNode;
+}
+
 export function ProductDetailSection({
   product,
   selectedOptionsPromise,
+  slots,
   variantPromise,
 }: {
   product: ProductDetails;
   selectedOptionsPromise: Promise<SelectedOptions>;
+  slots?: ProductDetailSlots;
   variantPromise: Promise<ProductVariant | undefined>;
 }) {
   return (
@@ -78,7 +86,7 @@ export function ProductDetailSection({
       />
       <div className="grid gap-10 lg:grid-cols-10 lg:items-start lg:gap-5">
         <ProductMediaArea product={product} selectedOptionsPromise={selectedOptionsPromise} />
-        <ProductInfoArea product={product} variantPromise={variantPromise} />
+        <ProductInfoArea product={product} slots={slots} variantPromise={variantPromise} />
       </div>
     </>
   );
@@ -159,9 +167,11 @@ async function ResolvedColorImageCarousel({
 
 function ProductInfoArea({
   product,
+  slots,
   variantPromise,
 }: {
   product: ProductDetails;
+  slots?: ProductDetailSlots;
   variantPromise: Promise<ProductVariant | undefined>;
 }) {
   const { options, handle, descriptionHtml } = product;
@@ -185,6 +195,7 @@ function ProductInfoArea({
               compareAtAmount={product.compareAtPriceRange?.minVariantPrice.amount}
             />
           ) : null}
+          {slots?.afterPrice}
         </div>
 
         {singleVariant ? (
@@ -214,6 +225,8 @@ function ProductInfoArea({
           </Suspense>
         )}
       </div>
+
+      {slots?.afterBuyButtons}
 
       {!product.isGiftCard && shopConfig.pdp.bundles.isEnabled ? (
         <BundleRelationships variant={product.defaultVariant} />

@@ -73,6 +73,7 @@ export function CartCheckout({ label = "Checkout" }: CartCheckoutProps) {
         aria-busy={isCheckingOut || isUpdatingCart || undefined}
         aria-describedby={checkoutError ? checkoutErrorId : undefined}
         className="h-12 w-full justify-center"
+        data-analytics-initiate-checkout=""
         disabled={isCheckoutDisabled}
         onClick={handleCheckout}
         type="button"
