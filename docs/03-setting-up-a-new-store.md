@@ -8,30 +8,37 @@ for building), a Vercel account, and the store's domain name.
 
 ## 1. Create the store repo
 
-Pick one option. Both keep the link to the base so improvements can flow in later.
+1. On GitHub, open the base repo (`aa-del9/e-commerce-shop`) and click **Fork**. Create the fork in your own
+   account or organization. A fork of a public repo is public too; the code holds no secrets (those live in
+   Vercel and `.env.local`), but the store's config and wording are visible.
+2. **Turn on GitHub Actions** in the fork: open the fork's **Actions** tab and click **I understand my workflows,
+   go ahead and enable them**. Forks start with Actions off, and without them every pull request shows no checks.
+   The checks run on your account's Actions minutes.
+3. Clone the fork to your computer, then point the GitHub command-line tool at the fork. Without this, pull
+   requests opened from the terminal go to the base repo instead of your store:
 
-- **Private repo with a `base` remote (recommended).** GitHub does not allow a fork of a public repo to be
-  private, and a store usually should be. Create an empty private repo on GitHub, then Claude Code (or a
-  developer) copies the base into it and adds the base as a second source called `base`:
+   ```sh
+   gh repo set-default <you>/<your-fork>
+   ```
 
-  ```sh
-  git clone https://github.com/aa-del9/e-commerce-shop.git my-store
-  cd my-store
-  git remote rename origin base
-  git remote add origin https://github.com/<you>/my-store.git
-  git push -u origin main
-  ```
+4. Mark the repo as a store and commit it:
 
-- **GitHub fork.** Click **Fork** on the base repo. Simple, and GitHub's **Sync fork** button pulls updates, but
-  the fork is public if the base is public.
+   ```sh
+   echo store > .repo-role
+   git add .repo-role && git commit -m "chore: mark this repo as a store"
+   git push
+   ```
 
-Then mark the repo as a store and commit it:
+   From now on Claude Code only edits the brand layer in this repo ([why](01-how-this-repo-works.md)).
 
-```sh
-echo store > .repo-role
-```
+5. `.github/CODEOWNERS` names the base maintainer (`@aa-del9`). If you turn on "require review from code owners"
+   in the fork, ask the maintainer whether to keep it or replace the name; this file is a base file, so change it
+   only as an agreed base change.
 
-From now on Claude Code only edits the brand layer in this repo ([why](01-how-this-repo-works.md)).
+Base updates arrive with GitHub's **Sync fork** button or the `sync-from-base` skill.
+
+Prefer a private store repo? Create an empty private repo, push a copy of the base to it, and add the base as a
+second remote called `base`. The `sync-from-base` skill works the same way.
 
 ## 2. Set up Shopify
 
@@ -101,7 +108,37 @@ Guides: [Install and set up apps](https://help.shopify.com/en/manual/apps/instal
 5. Optional: `pnpm shopify:seed` adds a few neutral sample entries (an announcement, 3 FAQs, 2 home sections and
    a size chart) so you can see every block. It never touches products or orders. Delete them before launch.
 
-## 7. Brand the store
+## 7. Test with the real store
+
+Before branding or showing anyone the site, check that the base works with this Shopify store. Most of this was
+only tested against Shopify's demo data, so this run is the real test. Use the Vercel preview (or `pnpm dev`)
+with the sample content from step 6 and at least two real test products.
+
+On one test product, fill in its metafields in the Shopify admin (product → **Metafields**): highlights, badges,
+a size chart, preorder plus a drop date in the future, and a delivery note.
+
+| Check                        | What you should see                                                                                                                                                                                                                           |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm env:check`             | ✅ for brand config and the three required Shopify values                                                                                                                                                                                     |
+| `pnpm shopify:setup`         | Finishes without errors. The definitions appear in Shopify admin → Settings → Custom data. Run `pnpm shopify:setup --dry-run` again: it should say everything is already up to date (webhooks created by the app are not listed in the admin) |
+| Home page                    | The sample hero and "New arrivals" sections. Set them to Draft and the page falls back to the store name and a product grid                                                                                                                   |
+| Announcement bar             | The sample announcement above the header                                                                                                                                                                                                      |
+| FAQ page (`/faq`)            | The 3 sample questions, grouped by category                                                                                                                                                                                                   |
+| Product page (test product)  | Badges, Preorder label, drop countdown, size chart drawer with cm/inch switch, delivery note, COD notice, Highlights accordion                                                                                                                |
+| Product page (other product) | No empty boxes or headings where content is missing                                                                                                                                                                                           |
+| Prices                       | Shown as `Rs 4,999` (no decimals) on product, collection, cart and search pages                                                                                                                                                               |
+| Cart and checkout            | Add to cart works; **Checkout** opens Shopify's checkout with the same items                                                                                                                                                                  |
+| Live updates                 | Change the announcement text in Shopify; the site shows it within about a minute without a redeploy                                                                                                                                           |
+| WhatsApp button              | Opens WhatsApp with the store number; on a product page the message includes the product name and link                                                                                                                                        |
+| Phone and desktop            | Every page above looks right on a phone and on a laptop                                                                                                                                                                                       |
+
+Claude Code can run the automated part for you: `BASE_URL=<preview link> pnpm test:e2e` (home page, product page,
+add to cart, checkout link) and `pnpm screenshots` for phone and desktop screenshots.
+
+If a check fails, open a **Something is broken** issue on the base repo with the page link and a screenshot. Fixes
+belong in the base, so every store gets them.
+
+## 8. Brand the store
 
 1. Run the `configure-brand` skill: name, contacts, WhatsApp, address, wording, features.
 2. Update `brand/assets/` (logo, favicon, share image) and run `pnpm brand:assets` to regenerate the icons and the
@@ -109,7 +146,7 @@ Guides: [Install and set up apps](https://help.shopify.com/en/manual/apps/instal
 3. Apply the design: `apply-figma-theme` for colors and fonts, `build-section-from-figma` for custom sections.
    See [Theme and Figma](06-theme-and-figma.md).
 
-## 8. Domains and checkout
+## 9. Domains and checkout
 
 1. Add the store domain in Vercel → Project → Domains and update `NEXT_PUBLIC_SITE_URL`.
 2. **Checkout domain:** checkout runs on Shopify. Add a `checkout.<your-domain>` CNAME record pointing to

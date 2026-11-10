@@ -20,7 +20,7 @@ issue. Steps marked "Shopify" happen in the Shopify admin; "Vercel" in the Verce
 
 - [ ] Vercel: store domain added and verified; `NEXT_PUBLIC_SITE_URL` set to it (Production).
 - [ ] Shopify: checkout subdomain (`checkout.<your-domain>`) set up and working
-      ([steps](03-setting-up-a-new-store.md#8-domains-and-checkout)).
+      ([steps](03-setting-up-a-new-store.md#9-domains-and-checkout)).
 - [ ] Shopify: the `myshopify.com` online store password page is not what shoppers land on (all links point to
       the Vercel domain).
 

@@ -93,6 +93,17 @@ request needs a base change; see [Working with Claude Code](02-working-with-clau
 - If the Shopify cookie banner is on, events wait until the shopper accepts.
 - Purchases come from Shopify's checkout through the Facebook & Instagram and Google & YouTube apps, not from the site.
 
+## A pull request opened on the base repo instead of the store
+
+Store repos are forks, and the GitHub command-line tool sends pull requests to the parent repo unless told
+otherwise. Close the stray pull request on the base repo, then ask Claude Code to run
+`gh repo set-default <you>/<your-fork>` in the store repo and ship the change again.
+
+## Pull requests show no checks
+
+GitHub turns Actions off in new forks. Open the fork's **Actions** tab and click **I understand my workflows, go
+ahead and enable them**, then push again or re-run the checks.
+
 ## Still stuck?
 
 Open a **Bug** issue on GitHub with the page link, what you did, and a screenshot, or ask Claude Code to look at it.

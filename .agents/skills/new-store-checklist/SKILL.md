@@ -14,11 +14,14 @@ conversation.
 3. Take **one step at a time**. For each step: say what it achieves in one sentence, give the exact clicks or
    the command you will run, do it (or wait for the PM to do the clicks), then confirm the result before moving
    on. Keep a running checklist in your replies with ✅ and ⬜.
-4. Steps you run yourself (with permission): creating the repo from the base, setting `.repo-role` to `store`
+4. Steps you run yourself (with permission): `gh repo set-default` to the store's fork, setting `.repo-role` to `store`
    (commit it), `pnpm env:check`, `pnpm shopify:setup --dry-run` then `pnpm shopify:setup`, optional
    `pnpm shopify:seed`, and the `configure-brand` skill.
 5. Steps the PM does in a browser: Shopify store and Headless channel, Dev Dashboard app for Admin access,
    Vercel project and environment variables, domains and the checkout subdomain. Point to the exact section of
    the doc and wait for them to say it is done. Never ask them to paste secrets into the chat; they paste
    secrets into Vercel or `.env.local` themselves.
-6. Finish with `docs/08-launch-checklist.md` and remind them that payments are a pending decision.
+6. Do not skip section 7, "Test with the real store". Run `BASE_URL=<preview link> pnpm test:e2e` and
+   `pnpm screenshots` for the PM, walk them through the manual checks in that table, and help them file a
+   "Something is broken" issue on the base repo for any failure.
+7. Finish with `docs/08-launch-checklist.md` and remind them that payments are a pending decision.
