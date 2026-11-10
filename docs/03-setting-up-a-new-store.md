@@ -8,20 +8,23 @@ for building), a Vercel account, and the store's domain name.
 
 ## 1. Create the store repo
 
-1. On GitHub, open the base repo (`aa-del9/e-commerce-shop`) and click **Fork**. Create the fork in your own
-   account or organization. A fork of a public repo is public too; the code holds no secrets (those live in
-   Vercel and `.env.local`), but the store's config and wording are visible.
-2. **Turn on GitHub Actions** in the fork: open the fork's **Actions** tab and click **I understand my workflows,
-   go ahead and enable them**. Forks start with Actions off, and without them every pull request shows no checks.
-   The checks run on your account's Actions minutes.
-3. Clone the fork to your computer, then point the GitHub command-line tool at the fork. Without this, pull
-   requests opened from the terminal go to the base repo instead of your store:
+The store gets its own repo in your GitHub account, holding a copy of the base. The copy keeps a link to the base
+so improvements can flow in later.
+
+1. On GitHub, create a **new empty repository** in your account or organization (no README, no license, no
+   .gitignore). Private is fine.
+2. Copy the base into it and keep the base as a second source called `base`:
 
    ```sh
-   gh repo set-default <you>/<your-fork>
+   git clone https://github.com/aa-del9/e-commerce-shop.git my-store
+   cd my-store
+   git remote rename origin base
+   git remote add origin https://github.com/<you>/my-store.git
+   git push -u origin main
+   gh repo set-default <you>/my-store   # pull requests go to the store repo, never the base
    ```
 
-4. Mark the repo as a store and commit it:
+3. Mark the repo as a store and commit it:
 
    ```sh
    echo store > .repo-role
@@ -31,14 +34,14 @@ for building), a Vercel account, and the store's domain name.
 
    From now on Claude Code only edits the brand layer in this repo ([why](01-how-this-repo-works.md)).
 
-5. `.github/CODEOWNERS` names the base maintainer (`@aa-del9`). If you turn on "require review from code owners"
-   in the fork, ask the maintainer whether to keep it or replace the name; this file is a base file, so change it
-   only as an agreed base change.
+4. Open the repo's **Actions** tab on GitHub and check that the **CI** workflow ran on that push. If Actions is
+   switched off for the account, turn it on (Settings → Actions → General); without it, pull requests show no
+   checks. The checks run on your account's Actions minutes.
+5. `.github/CODEOWNERS` names the base maintainer (`@aa-del9`). If you turn on "require review from code owners",
+   ask the maintainer whether to keep it or replace the name; this file is a base file, so change it only as an
+   agreed base change.
 
-Base updates arrive with GitHub's **Sync fork** button or the `sync-from-base` skill.
-
-Prefer a private store repo? Create an empty private repo, push a copy of the base to it, and add the base as a
-second remote called `base`. The `sync-from-base` skill works the same way.
+Base updates arrive through the `sync-from-base` skill, which pulls from the `base` source.
 
 ## 2. Set up Shopify
 

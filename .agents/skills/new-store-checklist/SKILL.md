@@ -14,7 +14,7 @@ conversation.
 3. Take **one step at a time**. For each step: say what it achieves in one sentence, give the exact clicks or
    the command you will run, do it (or wait for the PM to do the clicks), then confirm the result before moving
    on. Keep a running checklist in your replies with ✅ and ⬜.
-4. Steps you run yourself (with permission): `gh repo set-default` to the store's fork, setting `.repo-role` to `store`
+4. Steps you run yourself (with permission): copying the base into the store's new repo with a `base` remote and `gh repo set-default <owner>/<store-repo>`, setting `.repo-role` to `store`
    (commit it), `pnpm env:check`, `pnpm shopify:setup --dry-run` then `pnpm shopify:setup`, optional
    `pnpm shopify:seed`, and the `configure-brand` skill.
 5. Steps the PM does in a browser: Shopify store and Headless channel, Dev Dashboard app for Admin access,

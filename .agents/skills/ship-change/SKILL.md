@@ -16,7 +16,7 @@ The PM never runs git. You do, and you explain the result.
 5. Commit with a conventional, plain message, for example `feat: show delivery note on product pages` or
    `style: apply the new color palette`.
 6. Push: `git push -u origin HEAD`. Never push to `main`, never force-push.
-7. Open a pull request with `gh pr create --repo <owner>/<repo> --fill-first` (the repo from `git remote get-url origin`; without `--repo`, gh may target the upstream parent of a fork), then edit the body to follow
+7. Open a pull request with `gh pr create --repo <owner>/<repo> --fill-first` (the repo from `git remote get-url origin`; without `--repo`, gh may target the `base` remote or a fork's parent), then edit the body to follow
    `.github/pull_request_template.md`: what changed in plain language, the checklist ticked honestly,
    base vs brand change marked. Attach or describe the screenshots.
 8. Wait for the Vercel preview: `gh pr checks --watch` (or poll `gh pr view --json statusCheckRollup`), then

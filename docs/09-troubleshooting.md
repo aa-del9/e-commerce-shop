@@ -95,14 +95,14 @@ request needs a base change; see [Working with Claude Code](02-working-with-clau
 
 ## A pull request opened on the base repo instead of the store
 
-Store repos are forks, and the GitHub command-line tool sends pull requests to the parent repo unless told
-otherwise. Close the stray pull request on the base repo, then ask Claude Code to run
-`gh repo set-default <you>/<your-fork>` in the store repo and ship the change again.
+The store repo still knows the base repo as a second source (`base`), and the GitHub command-line tool can pick
+it. Close the stray pull request on the base repo, then ask Claude Code to run
+`gh repo set-default <you>/my-store` in the store repo and ship the change again.
 
 ## Pull requests show no checks
 
-GitHub turns Actions off in new forks. Open the fork's **Actions** tab and click **I understand my workflows, go
-ahead and enable them**, then push again or re-run the checks.
+GitHub Actions is switched off for the repo or account. Open the repo's **Settings → Actions → General**, allow
+actions, then push again or re-run the checks from the **Actions** tab.
 
 ## Still stuck?
 
